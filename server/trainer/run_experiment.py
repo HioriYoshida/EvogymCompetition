@@ -40,7 +40,7 @@ def run_experiment(
     mutation_name: str = "default",
     crossover_name: str = "none",
     selection_name: str = "truncation",
-    use_custom_env: bool = False,
+    use_custom_env: bool = True,
 ) -> None:
     env_id, is_custom = resolve_env(env_name, max_episode_steps, force_custom=use_custom_env)
     home_path = os.path.join("server/saved_data", exp_name)

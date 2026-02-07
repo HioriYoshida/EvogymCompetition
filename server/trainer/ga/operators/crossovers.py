@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Tuple
 import numpy as np
 
+from evogym import get_full_connectivity,is_connected
 from server.trainer.ga.base import Individual
 
 
@@ -38,16 +39,22 @@ class RowCrossover:
 
         child1_body = np.vstack([body1[:cut], body2[cut:]])
         child2_body = np.vstack([body2[:cut], body1[cut:]])
+        
+        if not is_connected(child1_body) or not is_connected(child2_body):
+            return NoCrossover()(p1, p2)        
+        
+        child1_conn = get_full_connectivity(child1_body)
+        child2_conn = get_full_connectivity(child2_body)
 
         c1 = Individual(
             child1_body,
-            p1.connections.copy(),
+            child1_conn,
             p1.label,
             p1.controller_params,
         )
         c2 = Individual(
             child2_body,
-            p2.connections.copy(),
+            child2_conn,
             p2.label,
             p2.controller_params,
         )
